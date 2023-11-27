@@ -1,16 +1,20 @@
 package dev.minhnhat.week06_lab_truongduongminhnhat_21028411.backend.models;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.validator.constraints.br.CPF;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "post_comment")
-@Getter @Setter
+@Table(name = "comment")
+@Getter
+@Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@ToString
 public class Comment {
     @Id
     @Column(nullable = false)
@@ -18,35 +22,41 @@ public class Comment {
     private long id;
 
     @ManyToOne
-    @Column(nullable = false)
-    @NonNull
-    private Post postID;
+    @JoinColumn(name = "postId", nullable = false)
+    private Post postId;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
-    @NonNull
-    private Comment parentID;
+    @JoinColumn(name = "parentId", nullable = false)
+    private Comment parentId;
 
     @ManyToOne
-    @Column(nullable = false)
-    @NonNull
-    private User userID;
+    @JoinColumn(name = "userId", nullable = false)
+    private User userId;
 
-    @Column(nullable = false)
-    private long title;
+    @Column(length = 100, nullable = false)
+    private String title;
 
     @Column(columnDefinition = "TINYINT(1)", nullable = false)
     private boolean published;
 
-    @Column(nullable = false)
-    @NonNull
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    @NonNull
-    private LocalDate publishedAt;
+    private LocalDateTime publishedAt;
 
-    @Column(nullable = false)
-    @NonNull
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentId", targetEntity = Comment.class)
+    public List<Comment> comments;
+
+    public Comment(Post postId, Comment parentId, User userId, String title, boolean published, LocalDateTime createdAt, LocalDateTime publishedAt, String content) {
+        this.postId = postId;
+        this.parentId = parentId;
+        this.userId = userId;
+        this.title = title;
+        this.published = published;
+        this.createdAt = createdAt;
+        this.publishedAt = publishedAt;
+        this.content = content;
+    }
 }

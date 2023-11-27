@@ -1,54 +1,60 @@
 package dev.minhnhat.week06_lab_truongduongminhnhat_21028411.backend.models;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Table(name = "User")
-@Getter @Setter
+@Table(name = "user")
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class User {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(length = 50, nullable = false)
-    @NonNull
     private String firstName;
-
     @Column(length = 50, nullable = false)
-    @NonNull
     private String middleName;
-
     @Column(length = 50, nullable = false)
-    @NonNull
     private String lastName;
-
     @Column(length = 15, nullable = false)
-    @NonNull
     private String mobile;
-
     @Column(length = 50, nullable = false)
-    @NonNull
     private String email;
-
     @Column(length = 32, nullable = false)
-    @NonNull
     private String passwordHash;
-
-    private LocalDate registerdAt;
-
+    private LocalDate registeredAt;
     private LocalDate lastLogin;
-
-    @Column(columnDefinition = "TINYINT", nullable = false)
-    @NonNull
+    @Column(columnDefinition = "TINYTEXT", nullable = false)
     private String intro;
-
     @Column(columnDefinition = "TEXT", nullable = false)
-    @NonNull
-    private String text;
+    private String profile;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorID", targetEntity = Post.class)
+    public List<Post> posts;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", targetEntity = Comment.class)
+    public List<Comment> comments;
+
+    public User(String firstName, String middleName, String lastName, String mobile, String email, String passwordHash, LocalDate registeredAt, LocalDate lastLogin, String intro, String profile) {
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.mobile = mobile;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.registeredAt = registeredAt;
+        this.lastLogin = lastLogin;
+        this.intro = intro;
+        this.profile = profile;
+    }
 }

@@ -13,7 +13,7 @@
         <header class="container-fluid nav navbar bg-light">
             <a href="/homepage">Home</a>
             <a href="/create-new-post">Create new Post</a>
-            <a href="">Account Information</a>
+            <a href="/view-detail-account">Account Information</a>
             <a href="/log-in">Log out</a>
         </header>
         <div class="container-fluid">
@@ -32,9 +32,6 @@
                         <label class="form-label col-1">Content:</label>
                         <p class="form-control" th:text="${subComment.content}"></p>
                     </div>
-                    <form th:action="@{/view-detail-user/{id}(id=${subComment.userId.id})}" method="get" class="text-center">
-                        <button class="btn btn-info">View Detail User</button>
-                    </form>
                 </div>
             </div>
         </div>

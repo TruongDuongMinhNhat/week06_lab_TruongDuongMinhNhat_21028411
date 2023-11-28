@@ -4,17 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Table(name = "user")
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
+@Entity @Table(name = "user")
+@Getter @Setter @NoArgsConstructor
 public class User {
     @Id
     @Column(nullable = false)
@@ -32,20 +27,19 @@ public class User {
     private String email;
     @Column(length = 32, nullable = false)
     private String passwordHash;
-    private LocalDate registeredAt;
-    private LocalDate lastLogin;
+    private LocalDateTime registeredAt;
+    private LocalDateTime lastLogin;
     @Column(columnDefinition = "TINYTEXT", nullable = false)
     private String intro;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String profile;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "authorID", targetEntity = Post.class)
-    public List<Post> posts;
+    @OneToMany(mappedBy = "authorId", cascade = CascadeType.ALL)
+    private List<Post> posts;
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId", targetEntity = Comment.class)
-    public List<Comment> comments;
-
-    public User(String firstName, String middleName, String lastName, String mobile, String email, String passwordHash, LocalDate registeredAt, LocalDate lastLogin, String intro, String profile) {
+    public User(String firstName, String middleName, String lastName, String mobile, String email, String passwordHash, LocalDateTime registeredAt, LocalDateTime lastLogin, String intro, String profile) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -56,5 +50,9 @@ public class User {
         this.lastLogin = lastLogin;
         this.intro = intro;
         this.profile = profile;
+    }
+
+    public String getFullyName() {
+        return firstName + " " + middleName + " " + lastName;
     }
 }

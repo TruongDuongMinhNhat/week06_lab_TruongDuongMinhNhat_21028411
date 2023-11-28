@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <header class="container-fluid nav navbar bg-light">
             <a href="#">Home</a>
-            <a href="">Create new Post</a>
+            <a href="/create-new-post">Create new Post</a>
             <a href="">Account Information</a>
             <a href="/log-in">Log out</a>
         </header>
@@ -30,7 +30,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    <tr th:each="post : ${listPost}">
+                        <td th:text="${post.id}"></td>
+                        <td th:text="${post.title}"></td>
+                        <td th:text="${post.authorId.getFullyName()}"></td>
+                        <td th:text="${post.createdAt}"></td>
+                        <td th:text="${post.updatedAt}"></td>
+                        <td th:text="${post.publishedAt}"></td>
+                        <td th:text="${post.comments.size()}"></td>
+                        <td>
+                            <form th:action="@{/view-detail/{postId}(postId=${post.id})}" method="get">
+                                <button class="btn btn-primary">View Detail</button>
+                            </form>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

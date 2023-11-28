@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Post Detail - Blog Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="container-fluid nav navbar">
+            <a href="/homepage">Home</a>
+            <a href="/create-new-post">Create new Post</a>
+            <a href="">Account Information</a>
+            <a href="/log-in">Log out</a>
+        </header>
+        <div class="container-fluid">
+            <!-- Show the detail blog-->
+            <div class="container-fluid">
+                <h3 class="text-center">Blog Detail</h3>
+                <div class="container-fluid">
+                    <div class=" mb-3 d-flex align-items-center">
+                        <label class="form-label col-5">ID Post:</label>
+                        <input class="form-control-plaintext" th:value="${postDetail.id}" readonly>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-5">Post Title:</label>
+                        <input class="form-control-plaintext" th:value="${postDetail.title}" readonly>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-5">Meta title:</label>
+                        <input class="form-control-plaintext" th:value="${postDetail.metaTitle}" readonly>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-5">Summary:</label>
+                        <input class="form-control-plaintext" th:value="${postDetail.summary}" readonly>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-5">Date Created:</label>
+                        <input class="form-control-plaintext" th:value="${postDetail.createdAt}" readonly>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-5">Updated At:</label>
+                        <input class="form-control-plaintext" th:value="${postDetail.updatedAt}" readonly>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-5">Published At:</label>
+                        <input class="form-control-plaintext" th:value="${postDetail.publishedAt}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label col-5">Content:</label>
+                        <p class="form-control" th:text="${postDetail.content}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Comment Blog -->
+            <div class="container-fluid">
+                <h3 class="text-center">Comment</h3>
+                <form th:action="@{/add-comment/{postId}(postId=${postDetail.id})}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Title Comment:</label>
+                        <input class="form-control" placeholder="Enter title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Content Comment:</label>
+                        <input class="form-control" placeholder="Enter content" name="content" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Published:</label>
+                        <select name="published" class="form-select">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div class="container-fluid text-center">
+                        <button type="submit" class="btn btn-primary">Create Comment</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- List Comment -->
+            <div class="container-fluid text-center">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td>ID Comment</td>
+                            <td>Title Comment</td>
+                            <td>Author Comment</td>
+                            <td>Date Created</td>
+                            <td>Number of Comment</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="comment : ${listComments}">
+                            <td th:text="${comment.id}"></td>
+                            <td th:text="${comment.title}"></td>
+                            <td th:text="${comment.userId.getFullyName()}"></td>
+                            <td th:text="${comment.createdAt}"></td>
+                            <td th:text="${comment.comments == null ? 0 : comment.comments.size()}"></td>
+                            <td>
+                                <form th:action="@{/view-detail-comment/{id}(id=${comment.id})}" method="get">
+                                    <button class="btn btn-primary">View Detail</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/add-sub-comment" method="get">
+                                    <input type="hidden" name="postId" th:value="${postDetail.id}">
+                                    <input type="hidden" name="commentParentId" th:value="${comment.id}">
+                                    <button class="btn btn-info">Comment</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

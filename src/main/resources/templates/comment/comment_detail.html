@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment Detail - Blog Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="container-fluid">
+        <header class="container-fluid nav navbar bg-light">
+            <a href="/homepage">Home</a>
+            <a href="/create-new-post">Create new Post</a>
+            <a href="">Account Information</a>
+            <a href="/log-in">Log out</a>
+        </header>
+        <div class="container-fluid">
+            <h3 class="text-center">List Comment</h3>
+            <div class="container-fluid mb-3" th:each="subComment : ${subComments}">
+                <div class="container-fluid mb-3 form-control">
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-1">User Name:</label>
+                        <input class="form-control-plaintext" th:value="${subComment.userId.getFullyName()}" readonly>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-1">Title:</label>
+                        <input class="form-control-plaintext" th:value="${subComment.title}" readonly>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center">
+                        <label class="form-label col-1">Content:</label>
+                        <p class="form-control" th:text="${subComment.content}"></p>
+                    </div>
+                    <form th:action="@{/view-detail-user/{id}(id=${subComment.userId.id})}" method="get" class="text-center">
+                        <button class="btn btn-info">View Detail User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

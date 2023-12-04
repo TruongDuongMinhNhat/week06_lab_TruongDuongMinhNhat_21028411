@@ -54,7 +54,7 @@ public class HomeController {
         model.addAttribute("accountDetail", user);
         model.addAttribute("listPost", postService.findAllByPublishedIsTrue(true));
 
-        request.getServletContext().setAttribute("accountLogin", user);
+        request.getServletContext().setAttribute("accountDetail", user);
         return "homepage";
     }
 
